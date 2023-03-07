@@ -64,6 +64,7 @@ public:
         setModel(av.model);
         capacitate_zbor = av.capacitate_zbor;
         consum100 = av.consum100;
+        return *this;
     }
 
 
@@ -72,7 +73,7 @@ public:
         delete[] model;
     }
     friend ostream& operator<<(ostream& os, const Avioane &rhs);
-    //friend istream& operator>>(istream& is, const Avioane &rhs);
+    friend istream& operator>>(istream& is, Avioane &rhs);
 };
 bool operator==(const Avioane lhs, const Avioane rhs){
     return strcmp(lhs.getModel(),rhs.getModel())==0 && lhs.getCapacitate() == rhs.getCapacitate() && lhs.getConsum100() == rhs.getConsum100();
@@ -84,35 +85,39 @@ ostream& operator<<(ostream& os, const Avioane &rhs) {
     os << rhs.inmatriculare << ' ' << rhs.model << ' ' << rhs.capacitate_zbor << ' ' << rhs.consum100;
     return os;
 }
-/*istream& operator>>(istream& is, Avioane &rhs){
-    cout << "Inmatriculare: ";
-    is >> rhs.inmatriculare>>"\n";
-    cout << "Model: ";
-    is >> rhs.model>>"\n";
-    cout << "Capacitate zbor(km): ";
+istream& operator>>(istream& is, Avioane &rhs){
     char aux[255];
-    is >> aux >> "\n";
+    cout << "Inmatriculare: ";
+    is >> aux;
+    strcpy(rhs.inmatriculare,aux);
+    cout << "Model: ";
+    is >> aux;
+    strcpy(rhs.model,aux);
+    cout << "Capacitate zbor(km): ";
+
+    is >> aux;
     rhs.setCapacitate(atoi(aux));
     cout << "Consum100: ";
-    is >> aux >> "\n";
+    is >> aux;
     rhs.setConsum100(atoi(aux));
     return is;
 
-}*/
+}
 class Zboruri{
     char *plecare, *destinatie;
     int distanta;
 public:
-    Zboruri(const char *plec, const char *dest, const int dist){
-        int len1 = strlen(plec) + 1;
-        int len2 = strlen(dest)  +1;
-
-        plecare = new char[len1];
-        strcpy(plecare, plec);
-
-        destinatie = new char[len2];
-        strcpy(destinatie, dest);
-
+    Zboruri(const char *plec = nullptr, const char *dest = nullptr, const int dist=0){
+        if(plec = nullptr){
+            int len1 = strlen(plec) + 1;
+            plecare = new char[len1];
+            strcpy(plecare, plec);
+        }
+        if(dest = nullptr) {
+            int len2 = strlen(dest) + 1;
+            destinatie = new char[len2];
+            strcpy(destinatie, dest);
+        }
         distanta = dist;
     }
 
@@ -157,6 +162,7 @@ public:
         setDestinatie(zb.destinatie);
         setPlecare(zb.plecare);
         distanta = zb.distanta;
+        return *this;
     }
 
     ~Zboruri(){
@@ -175,23 +181,52 @@ ostream& operator<<(ostream& os, const Zboruri &rhs) {
     os << rhs.plecare << ' ' << rhs.destinatie << ' ' << rhs.distanta;
     return os;
 }
-struct Avion{
-    Avioane av;
-    Avion *next;
-};
-struct Zbor{
-    Zboruri zb;
-    Zbor *next;
-};
-void init(Avioane &av){
-    av.setCapacitate(2000);
-    av.setConsum100(10);
 
+
+void init(Avioane *av,Zboruri *zb){
+    av[0].setInmatriculare("YR-MIZ");
+    av[1].setInmatriculare("YR-MIR");
+    av[2].setInmatriculare("YR-MIV");
+    av[3].setInmatriculare("YR-MIB");
+
+    av[0].setModel("Boeing737");
+    av[1].setModel("Boeing737");
+    av[2].setModel("Boeing737MAX");
+    av[3].setModel("Boeing737MAX");
+
+    av[0].setCapacitate(3000);
+    av[1].setCapacitate(3000);
+    av[2].setCapacitate(4000);
+    av[3].setCapacitate(4000);
+
+    av[0].setConsum100(20);
+    av[1].setConsum100(20);
+    av[2].setConsum100(18);
+    av[3].setConsum100(18);
+
+    zb[0].setPlecare("OTP");
+    zb[1].setPlecare("OTP");
+    zb[2].setPlecare("BCN");
+    zb[3].setPlecare("FCO");
+    zb[4].setPlecare("FCO");
+
+    zb[0].setDestinatie("BCN");
+    zb[1].setDestinatie("FCO");
+    zb[2].setDestinatie("LTN");
+    zb[3].setDestinatie("BCN");
+    zb[4].setDestinatie("BGY");
+
+    zb[0].setDistanta(1975);
+    zb[1].setDistanta(1141);
+    zb[2].setDistanta(1183);
+    zb[3].setDistanta(951);
+    zb[4].setDistanta(500);
 }
 int main(){
-    Avion *Flota = new Avion;
-    Avioane av;
-    //cin>>av;
-    cout<<(av);
+    Avioane *avi = new Avioane[4];
+    Zboruri *zbo = new Zboruri[6];
+    init(avi, zbo);
+    cout<<avi[0]<<endl;
+    cout<<zbo[1]<<endl;
     return 0;
 }
