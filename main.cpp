@@ -12,20 +12,25 @@ public:
             int len1 = strlen(n) + 1;
             inmatriculare = new char[len1];
             strcpy(inmatriculare, n);
+        }else{
+            inmatriculare = nullptr;
         }
         if (m != nullptr){
             int len2 = strlen(m) + 1;
             model = new char[len2];
             strcpy(model, m);
+        }else{
+            model = nullptr;
         }
         capacitate_zbor = cap;
         consum100 = comb;
     }
     Avioane(const Avioane &av){
         int len1 = strlen(av.model) + 1;
-        inmatriculare = new char[1];
+        int len2 = strlen(av.inmatriculare) + 1;
+        inmatriculare = new char[len2];
         model = new char[len1];
-        strcpy(inmatriculare, "\0");
+        strcpy(inmatriculare, av.inmatriculare);
         strcpy(model, av.model);
         capacitate_zbor = av.capacitate_zbor;
         consum100 = av.consum100;
@@ -64,7 +69,7 @@ public:
     void setConsum100(int i){
         consum100 = i;
     }
-    Avioane operator=(const Avioane &av){
+    Avioane &operator=(const Avioane &av){
         setInmatriculare(av.inmatriculare);
         setModel(av.model);
         capacitate_zbor = av.capacitate_zbor;
@@ -82,7 +87,7 @@ public:
 };
 bool operator==(const Avioane lhs, const Avioane rhs){
     return strcmp(lhs.getModel(),rhs.getModel())==0 && lhs.getCapacitate() == rhs.getCapacitate() && lhs.getConsum100() == rhs.getConsum100();
-}
+} //Inmatriculare nu este introdus ca criteriu de comparatie, deoarece nu pot exista 2 avioane cu aceeasi inmatriculare
 bool operator!=(const Avioane lhs, const Avioane rhs){
     return strcmp(lhs.getModel(),rhs.getModel())!=0 || lhs.getCapacitate() != rhs.getCapacitate() || lhs.getConsum100() != rhs.getConsum100();
 }
@@ -94,10 +99,10 @@ istream& operator>>(istream& is, Avioane &rhs){
     char aux[255];
     cout << "Inmatriculare: ";
     is >> aux;
-    strcpy(rhs.inmatriculare,aux);
+    rhs.setInmatriculare(aux);
     cout << "Model: ";
     is >> aux;
-    strcpy(rhs.model,aux);
+    rhs.setModel(aux);
     cout << "Capacitate zbor(km): ";
 
     is >> aux;
@@ -113,15 +118,19 @@ class Zboruri{
     int distanta;
 public:
     Zboruri(const char *plec = nullptr, const char *dest = nullptr, const int dist=0){
-        if(plec = nullptr){
+        if(plec != nullptr){
             int len1 = strlen(plec) + 1;
             plecare = new char[len1];
             strcpy(plecare, plec);
+        }else{
+            plecare = nullptr;
         }
-        if(dest = nullptr) {
+        if(dest != nullptr) {
             int len2 = strlen(dest) + 1;
             destinatie = new char[len2];
             strcpy(destinatie, dest);
+        }else{
+            destinatie = nullptr;
         }
         distanta = dist;
     }
@@ -129,6 +138,9 @@ public:
     Zboruri(const Zboruri &zb){
         int len1 = strlen(zb.plecare) + 1;
         int len2 = strlen(zb.destinatie)  +1;
+
+        if(plecare == nullptr)delete[] plecare;
+        if(destinatie == nullptr)delete[] destinatie;
 
         plecare = new char[len1];
         strcpy(plecare, zb.plecare);
@@ -139,23 +151,27 @@ public:
         distanta = zb.distanta;
     }
 
-    char *getPlecare(){
+    char *getPlecare()const{
         return plecare;
     }
-    char *getDestinatie(){
+    char *getDestinatie()const{
         return destinatie;
     }
-    int getDistanta(){
+    int getDistanta()const{
         return distanta;
     }
     void setPlecare(const char *plec){
-        delete[] plecare;
+        if(plecare != nullptr){
+            delete[] plecare;
+        }
         int len = strlen(plec) + 1;
         plecare = new char[len];
         strcpy(plecare, plec);
     }
     void setDestinatie(const char *dest){
-        delete[] destinatie;
+        if(destinatie!=nullptr){
+            delete[] destinatie;
+        }
         int len = strlen(dest) + 1;
         destinatie = new char[len];
         strcpy(destinatie, dest);
@@ -163,7 +179,7 @@ public:
     void setDistanta(const int dist){
         distanta = dist;
     }
-    Zboruri operator=(const Zboruri &zb){
+    Zboruri &operator=(const Zboruri &zb){
         setDestinatie(zb.destinatie);
         setPlecare(zb.plecare);
         distanta = zb.distanta;
@@ -228,8 +244,8 @@ void init(Avioane *av,Zboruri *zb){
     zb[4].setDistanta(500);
 }
 Avioane *avi = new Avioane[4];
-Zboruri *zbo = new Zboruri[6];
-int len_avi = 4, len_zbo = 6;
+Zboruri *zbo = new Zboruri[5];
+int len_avi = 4, len_zbo = 5;
 
 void sterge_avion(){
     char a[255];
@@ -249,7 +265,6 @@ void sterge_avion(){
                 j++;
             }
         }
-        for(int i=0;i<len_avi;i++)cout<<avi[i].getModel()<<endl;
         delete[] avi;
         avi = aux;
         len_avi--;
@@ -262,17 +277,17 @@ void sterge_ruta(){
     int ok=0;
     cout<<"Introdu aeroportul de plecare: ";
     cin>>a;
-    cout<<"Introdu aeroportul de plecare: ";
+    cout<<"Introdu aeroportul de destinatie: ";
     cin>>b;
     for(int i=0;i<len_zbo;i++){
-        if(strcmp(zbo[i].getPlecare(),a)==0 && strcmp(zbo[i].getDestinatie(),a)==0){ok=1;break;}
+        if(strcmp(zbo[i].getPlecare(),a)==0 && strcmp(zbo[i].getDestinatie(),b)==0){ok=1;break;}
     }
     if(!ok)cout<<"Nu exista acesta ruta"<<endl;
     else{
         Zboruri *aux = new Zboruri[len_zbo-1];
         int j=0;
         for(int i=0;i<len_zbo;i++){
-            if(strcmp(zbo[i].getPlecare(),a)!=0 || strcmp(zbo[i].getDestinatie(),a)!=0) {
+            if(strcmp(zbo[i].getPlecare(),a)!=0 || strcmp(zbo[i].getDestinatie(),b)!=0) {
                 aux[j] = zbo[i];
                 j++;
             }
@@ -294,7 +309,7 @@ void meniu()
     int ok = 1;
     while(ok) {
         int input;
-        cout<< "Introdu codul operatiei dorite: ";
+        cout<< "\nIntrodu codul operatiei dorite: ";
         cin >> input;
         switch (input) {
             case 11: {
@@ -330,10 +345,8 @@ void meniu()
 int main(){
 
     init(avi, zbo);
-    //meniu();
+    meniu();
 
-    for(int i=0;i<len_avi;i++)cout<<avi[i]<<endl;
-    for(int i=0;i<len_zbo;i++)cout<<zbo[i]<<endl;
 
     delete[] avi;
     delete[] zbo;
