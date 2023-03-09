@@ -7,7 +7,7 @@ class Avioane{
     char *inmatriculare, *model;
     int capacitate_zbor, consum100;
 public:
-    Avioane(char *n=nullptr, char *m=nullptr, int cap=0, int comb=0) {
+    Avioane(const char *n=nullptr,const  char *m=nullptr,const  int cap=0,const  int comb=0) {
         if (n != nullptr) {
             int len1 = strlen(n) + 1;
             inmatriculare = new char[len1];
@@ -47,7 +47,7 @@ public:
     int getConsum100() const{
         return consum100;
     }
-    void setInmatriculare(char *i){
+    void setInmatriculare(const char *i){
         if(inmatriculare!=nullptr){
             delete[] inmatriculare;
         }
@@ -55,7 +55,7 @@ public:
         inmatriculare = new char[len1];
         strcpy(inmatriculare, i);
     }
-    void setModel(char *i){
+    void setModel(const char *i){
         if(model!=nullptr){
             delete[] model;
         }
@@ -63,10 +63,10 @@ public:
         model = new char[len1];
         strcpy(model, i);
     }
-    void setCapacitate(int i){
+    void setCapacitate(const int i){
         capacitate_zbor = i;
     }
-    void setConsum100(int i){
+    void setConsum100(const int i){
         consum100 = i;
     }
     Avioane &operator=(const Avioane &av){
@@ -202,7 +202,19 @@ ostream& operator<<(ostream& os, const Zboruri &rhs) {
     os << rhs.plecare << ' ' << rhs.destinatie << ' ' << rhs.distanta;
     return os;
 }
-
+istream& operator>>(istream& is, Zboruri &rhs){
+    char aux[255];
+    cout << "Aeroport plecare: ";
+    is >> aux;
+    rhs.setPlecare(aux);
+    cout << "Aeroport destinatie: ";
+    is >> aux;
+    rhs.setDestinatie(aux);
+    cout << "Distanta(km): ";
+    is >> aux;
+    rhs.setDistanta(atoi(aux));
+    return is;
+}
 
 void init(Avioane *av,Zboruri *zb){
     av[0].setInmatriculare("YR-MIZ");
@@ -247,6 +259,23 @@ Avioane *avi = new Avioane[4];
 Zboruri *zbo = new Zboruri[5];
 int len_avi = 4, len_zbo = 5;
 
+void adauga_avioane(){
+    cout<<"Cate avioane doriti sa introduceti:";
+    int nr;
+    cin>>nr;
+    if(!nr)return;
+    Avioane *temp = new Avioane[len_avi+nr];
+    for(int i=0;i<len_avi;i++){
+        temp[i] = avi[i];
+    }
+    for(int i=len_avi;i<len_avi+nr;i++){
+        cin>>temp[i];
+    }
+    len_avi+=nr;
+    delete[] avi;
+    avi = temp;
+}
+
 void sterge_avion(){
     char a[255];
     bool ok=0;
@@ -271,6 +300,22 @@ void sterge_avion(){
 
     }
 
+}
+void adauga_ruta(){
+    cout<<"Cate rute doriti sa introduceti:";
+    int nr;
+    cin>>nr;
+    if(!nr)return;
+    Zboruri *temp = new Zboruri[len_zbo+nr];
+    for(int i=0;i<len_zbo;i++){
+        temp[i] = zbo[i];
+    }
+    for(int i=len_zbo;i<len_zbo+nr;i++){
+        cin>>temp[i];
+    }
+    len_zbo+=nr;
+    delete[] zbo;
+    zbo = temp;
 }
 void sterge_ruta(){
     char a[255],b[255];
@@ -297,6 +342,54 @@ void sterge_ruta(){
         len_zbo--;
     }
 }
+void avr(){
+    cout<<"Introduceti ruta pe care doriti sa o verificati\nPlecare:";
+    char a[255],b[255];
+    cin>>a;
+    cout<<"Destinatie:";cin>>b;
+    int dist =0;
+    for(int i=0; i<len_zbo;i++){
+        if(strcmp(zbo[i].getPlecare(),a)==0 && strcmp(zbo[i].getDestinatie(),b)==0){
+            dist = zbo[i].getDistanta();
+            break;
+        }
+    }
+    if(dist == 0)cout<<"Nu exista aceasta ruta in structura.";
+    else{
+        bool ok=0;
+        for(int i=0;i<len_avi;i++){
+            if(avi[i].getCapacitate() > 2 * dist + dist/10) {
+                cout << avi[i].getInmatriculare() << " poate zbura cu un consum de "
+                     << avi[i].getConsum100() * (dist / 100) << " litri de kerosen.\n";
+                ok=1;
+            }
+        }
+        if(!ok)cout<<"In flota nu exita niciun avion care poate circula pe aceasta ruta.";
+    }
+}
+void rva(){
+    cout<<"Introduceti nr. de inmatriculare al avionului:";
+    char a[255];
+    cin>>a;
+    int index=-1;
+    for(int i = 0;i<=len_avi;i++){
+        if(strcmp(avi[i].getInmatriculare(),a)==0){index=i;break;}
+    }
+    if(index == -1){
+        cout<<"Acest avion nu exista in flota";
+        return;
+    }
+    bool ok=0;
+    for(int i = 0;i<len_zbo;i++){
+        if(avi[index].getCapacitate() > 2 * zbo[i].getDistanta() + zbo[i].getDistanta()/10) {
+            cout << "Pe ruta " << zbo[i].getPlecare() << " " << zbo[i].getDestinatie()
+                 << " se poate zbura cu un consum de "
+                 << avi[index].getConsum100() * (zbo[i].getDistanta() / 100) << " litri de kerosen.\n";
+            ok = 1;
+        }
+    }
+    if(!ok)cout<<"Avionul nu poate zbura pe nici o ruta inregistrata.";
+}
 void meniu()
 {
 
@@ -313,6 +406,7 @@ void meniu()
         cin >> input;
         switch (input) {
             case 11: {
+                adauga_avioane();
                 break;
             }
             case 12: {
@@ -320,6 +414,7 @@ void meniu()
                 break;
             }
             case 21: {
+                adauga_ruta();
                 break;
             }
             case 22: {
@@ -327,9 +422,11 @@ void meniu()
                 break;
             }
             case 3: {
+                avr();
                 break;
             }
             case 4: {
+                rva();
                 break;
             }
             case 5: {
@@ -337,7 +434,7 @@ void meniu()
                 break;
             }
             default:
-                cout << "Numar introdus gresit."<<endl;
+                cout << "Numarul introdus este gresit."<<endl;
         }
     }
 }
@@ -346,8 +443,6 @@ int main(){
 
     init(avi, zbo);
     meniu();
-
-
     delete[] avi;
     delete[] zbo;
     return 0;
