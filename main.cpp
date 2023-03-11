@@ -8,7 +8,13 @@ class Avioane{
     char *inmatriculare, *model;
     int capacitate_zbor, consum100;
 public:
-    Avioane(const char *n=nullptr,const  char *m=nullptr,const  int cap=0,const  int comb=0) {
+    Avioane(){
+        inmatriculare = nullptr;
+        model = nullptr;
+        capacitate_zbor = 0;
+        consum100 = 0;
+    }
+    Avioane(const char *n,const  char *m,const  int cap,const  int comb) {
         if (n != nullptr) {
             int len1 = strlen(n) + 1;
             inmatriculare = new char[len1];
