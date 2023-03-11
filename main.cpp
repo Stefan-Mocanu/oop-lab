@@ -86,10 +86,10 @@ public:
     friend ostream& operator<<(ostream& os, const Avioane &rhs);
     friend istream& operator>>(istream& is, Avioane &rhs);
 };
-bool operator==(const Avioane lhs, const Avioane rhs){
+bool operator==(const Avioane &lhs, const Avioane &rhs){
     return strcmp(lhs.getModel(),rhs.getModel())==0 && lhs.getCapacitate() == rhs.getCapacitate() && lhs.getConsum100() == rhs.getConsum100();
 } //Inmatriculare nu este introdus ca criteriu de comparatie, deoarece nu pot exista 2 avioane cu aceeasi inmatriculare
-bool operator!=(const Avioane lhs, const Avioane rhs){
+bool operator!=(const Avioane &lhs, const Avioane &rhs){
     return strcmp(lhs.getModel(),rhs.getModel())!=0 || lhs.getCapacitate() != rhs.getCapacitate() || lhs.getConsum100() != rhs.getConsum100();
 }
 ostream& operator<<(ostream& os, const Avioane &rhs) {
@@ -193,10 +193,10 @@ public:
     }
     friend ostream& operator<<(ostream& os, const Zboruri &rhs);
 };
-bool operator==(Zboruri &st, Zboruri &dr){
+bool operator==(const Zboruri &st, const Zboruri &dr){
     return strcmp(st.getDestinatie(),dr.getDestinatie())==0 && strcmp(st.getPlecare(),dr.getPlecare())==0 && st.getDistanta() == dr.getDistanta();
 }
-bool operator!=(Zboruri &st, Zboruri &dr){
+bool operator!=(const Zboruri &st, const Zboruri &dr){
     return strcmp(st.getDestinatie(),dr.getDestinatie())!=0 || strcmp(st.getPlecare(),dr.getPlecare())!=0 || st.getDistanta() != dr.getDistanta();
 }
 ostream& operator<<(ostream& os, const Zboruri &rhs) {
