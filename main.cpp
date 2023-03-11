@@ -3,7 +3,7 @@
 #include <fstream>
 using namespace std;
 
-ifstream fin("D:\\Faculatate\\Coduri\\POO\\Pr1\\tastatura.txt");
+ifstream fin("tastatura.txt");
 class Avioane{
     char *inmatriculare, *model;
     int capacitate_zbor, consum100;
