@@ -1,8 +1,9 @@
 #include <iostream>
 #include <cstring>
-
+#include <fstream>
 using namespace std;
 
+ifstream fin("D:\\Faculatate\\Coduri\\POO\\Pr1\\tastatura.txt");
 class Avioane{
     char *inmatriculare, *model;
     int capacitate_zbor, consum100;
@@ -266,16 +267,16 @@ Zboruri *zbo = new Zboruri[7];
 int len_avi = 4, len_zbo = 7;
 
 void adauga_avioane(){
-    cout<<"Cate avioane doriti sa introduceti:";
+    cout<<"Cate avioane doriti sa introduceti:\n";
     int nr;
-    cin>>nr;
+    fin>>nr;
     if(!nr)return;
     Avioane *temp = new Avioane[len_avi+nr];
     for(int i=0;i<len_avi;i++){
         temp[i] = avi[i];
     }
     for(int i=len_avi;i<len_avi+nr;i++){
-        cin>>temp[i];
+        fin>>temp[i];
     }
     len_avi+=nr;
     delete[] avi;
@@ -285,8 +286,8 @@ void adauga_avioane(){
 void sterge_avion(){
     char a[255];
     bool ok=0;
-    cout<<"Introdu inmatricularea avionului care trebuie sters din flota: ";
-    cin>>a;
+    cout<<"Introdu inmatricularea avionului care trebuie sters din flota: \n";
+    fin>>a;
     for(int i=0;i<len_avi;i++){
         if(strcmp(avi[i].getInmatriculare(),a)==0){ok=1;break;}
     }
@@ -308,16 +309,16 @@ void sterge_avion(){
 
 }
 void adauga_ruta(){
-    cout<<"Cate rute doriti sa introduceti:";
+    cout<<"Cate rute doriti sa introduceti:\n";
     int nr;
-    cin>>nr;
+    fin>>nr;
     if(!nr)return;
     Zboruri *temp = new Zboruri[len_zbo+nr];
     for(int i=0;i<len_zbo;i++){
         temp[i] = zbo[i];
     }
     for(int i=len_zbo;i<len_zbo+nr;i++){
-        cin>>temp[i];
+        fin>>temp[i];
     }
     len_zbo+=nr;
     delete[] zbo;
@@ -326,10 +327,10 @@ void adauga_ruta(){
 void sterge_ruta(){
     char a[255],b[255];
     int ok=0;
-    cout<<"Introdu aeroportul de plecare: ";
-    cin>>a;
-    cout<<"Introdu aeroportul de destinatie: ";
-    cin>>b;
+    cout<<"Introdu aeroportul de plecare: \n";
+    fin>>a;
+    cout<<"Introdu aeroportul de destinatie: \n";
+    fin>>b;
     for(int i=0;i<len_zbo;i++){
         if(strcmp(zbo[i].getPlecare(),a)==0 && strcmp(zbo[i].getDestinatie(),b)==0){ok=1;break;}
     }
@@ -349,10 +350,10 @@ void sterge_ruta(){
     }
 }
 void avr(){
-    cout<<"Introduceti ruta pe care doriti sa o verificati\nPlecare:";
+    cout<<"Introduceti ruta pe care doriti sa o verificati\nPlecare:\n";
     char a[255],b[255];
-    cin>>a;
-    cout<<"Destinatie:";cin>>b;
+    fin>>a;
+    cout<<"Destinatie:\n";fin>>b;
     int dist =0;
     for(int i=0; i<len_zbo;i++){
         if(strcmp(zbo[i].getPlecare(),a)==0 && strcmp(zbo[i].getDestinatie(),b)==0){
@@ -360,7 +361,7 @@ void avr(){
             break;
         }
     }
-    if(dist == 0)cout<<"Nu exista aceasta ruta in structura.";
+    if(dist == 0)cout<<"Nu exista aceasta ruta in structura.\n";
     else{
         bool ok=0;
         for(int i=0;i<len_avi;i++){
@@ -374,9 +375,9 @@ void avr(){
     }
 }
 void rva(){
-    cout<<"Introduceti nr. de inmatriculare al avionului:";
+    cout<<"Introduceti nr. de inmatriculare al avionului:\n";
     char a[255];
-    cin>>a;
+    fin>>a;
     int index=-1;
     for(int i = 0;i<=len_avi;i++){
         if(strcmp(avi[i].getInmatriculare(),a)==0){index=i;break;}
@@ -418,8 +419,8 @@ void meniu()
     int ok = 1;
     while(ok) {
         int input;
-        cout<< "\nIntrodu codul operatiei dorite: ";
-        cin >> input;
+        cout<< "\nIntrodu codul operatiei dorite: \n";
+        fin >> input;
         switch (input) {
             case 11: {
                 adauga_avioane();
