@@ -124,7 +124,12 @@ class Zboruri{
     char *plecare, *destinatie;
     int distanta;
 public:
-    Zboruri(const char *plec = nullptr, const char *dest = nullptr, const int dist=0){
+    Zboruri(){
+        plecare = nullptr;
+        destinatie = nullptr;
+        distanta =0;
+    }
+    Zboruri(const char *plec, const char *dest, const int dist){
         if(plec != nullptr){
             int len1 = strlen(plec) + 1;
             plecare = new char[len1];
