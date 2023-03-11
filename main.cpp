@@ -227,10 +227,10 @@ void init(Avioane *av,Zboruri *zb){
     av[2].setModel("Boeing737MAX");
     av[3].setModel("Boeing737MAX");
 
-    av[0].setCapacitate(3000);
-    av[1].setCapacitate(3000);
-    av[2].setCapacitate(4000);
-    av[3].setCapacitate(4000);
+    av[0].setCapacitate(4000);
+    av[1].setCapacitate(4000);
+    av[2].setCapacitate(5000);
+    av[3].setCapacitate(5000);
 
     av[0].setConsum100(20);
     av[1].setConsum100(20);
@@ -242,22 +242,28 @@ void init(Avioane *av,Zboruri *zb){
     zb[2].setPlecare("BCN");
     zb[3].setPlecare("FCO");
     zb[4].setPlecare("FCO");
+    zb[5].setPlecare("BCN");
+    zb[6].setPlecare("JFK");
 
     zb[0].setDestinatie("BCN");
     zb[1].setDestinatie("FCO");
     zb[2].setDestinatie("LTN");
     zb[3].setDestinatie("BCN");
     zb[4].setDestinatie("BGY");
+    zb[5].setDestinatie("JFK");
+    zb[6].setDestinatie("LAX");
 
     zb[0].setDistanta(1975);
     zb[1].setDistanta(1141);
     zb[2].setDistanta(1183);
     zb[3].setDistanta(951);
     zb[4].setDistanta(500);
+    zb[5].setDistanta(6162);
+    zb[6].setDistanta(3935);
 }
 Avioane *avi = new Avioane[4];
-Zboruri *zbo = new Zboruri[5];
-int len_avi = 4, len_zbo = 5;
+Zboruri *zbo = new Zboruri[7];
+int len_avi = 4, len_zbo = 7;
 
 void adauga_avioane(){
     cout<<"Cate avioane doriti sa introduceti:";
@@ -390,15 +396,25 @@ void rva(){
     }
     if(!ok)cout<<"Avionul nu poate zbura pe nici o ruta inregistrata.";
 }
+void af_avi(){
+    cout<<"Inmatriculare/Model/Capacitate de zbor(km)/Consum la 100 de km\n";
+    for(int i = 0;i<len_avi;i++)cout<<avi[i]<<endl;
+}
+void af_zbo(){
+    cout<<"Plecare/Destinatie/Distanta\n";
+    for(int i = 0;i<len_zbo;i++)cout<<zbo[i]<<endl;
+}
 void meniu()
 {
 
     cout<<"Meniu. \nIntroduceti in consola numarul operatiei dorite."<<endl;
-    cout<<"1. Adaugati(1)/Stergeti(2) un avion"<<endl;
-    cout<<"2. Adaugati(1)/Stergeti(2) o ruta"<<endl;
-    cout<<"3. Afiseaza avioanele care pot circula pe o anumita ruta"<<endl;
-    cout<<"4. Afiseaza rutele care pot fi circulate de un anumit avion"<<endl;
-    cout<<"5. Iesire"<<endl;
+    cout<<"1. Adaugati(1)/Stergeti(2) un avion."<<endl;
+    cout<<"2. Adaugati(1)/Stergeti(2) o ruta."<<endl;
+    cout<<"3. Afiseaza avioanele care pot circula pe o anumita ruta."<<endl;
+    cout<<"4. Afiseaza rutele care pot fi circulate de un anumit avion."<<endl;
+    cout<<"5. Afiseaza toate avioanele din flota."<<endl;
+    cout<<"6. Afiseaza toate rutele disponibile."<<endl;
+    cout<<"7. Iesire."<<endl;
     int ok = 1;
     while(ok) {
         int input;
@@ -429,7 +445,15 @@ void meniu()
                 rva();
                 break;
             }
-            case 5: {
+            case 5:{
+                af_avi();
+                break;
+            }
+            case 6:{
+                af_zbo();
+                break;
+            }
+            case 7: {
                 ok = 0;
                 break;
             }
