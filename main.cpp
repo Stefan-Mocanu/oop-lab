@@ -428,6 +428,7 @@ void meniu()
     cout<<"6. Afiseaza toate rutele disponibile."<<endl;
     cout<<"7. Iesire."<<endl;
     int ok = 1;
+    int ciclu =0;
     while(ok) {
         int input;
         cout<< "\nIntrodu codul operatiei dorite: \n";
@@ -472,6 +473,7 @@ void meniu()
             default:
                 cout << "Numarul introdus este gresit."<<endl;
         }
+        if(ciclu++==2000)ok=0;
     }
 }
 
