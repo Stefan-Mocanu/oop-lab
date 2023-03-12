@@ -234,20 +234,20 @@ void init(Avioane *av,Zboruri *zb){
     av[2].setInmatriculare("YR-MIV");
     av[3].setInmatriculare("YR-MIB");
 
-    av[0].setModel("Boeing737");
-    av[1].setModel("Boeing737");
-    av[2].setModel("Boeing737MAX");
+    av[0].setModel("Boeing737-300");
+    av[1].setModel("Boeing737-800");
+    av[2].setModel("Atr-72");
     av[3].setModel("Boeing737MAX");
 
     av[0].setCapacitate(4000);
-    av[1].setCapacitate(4000);
-    av[2].setCapacitate(5000);
-    av[3].setCapacitate(5000);
+    av[1].setCapacitate(5000);
+    av[2].setCapacitate(1300);
+    av[3].setCapacitate(5700);
 
-    av[0].setConsum100(20);
-    av[1].setConsum100(20);
-    av[2].setConsum100(18);
-    av[3].setConsum100(18);
+    av[0].setConsum100(110);
+    av[1].setConsum100(100);
+    av[2].setConsum100(80);
+    av[3].setConsum100(95);
 
     zb[0].setPlecare("OTP");
     zb[1].setPlecare("OTP");
@@ -256,6 +256,7 @@ void init(Avioane *av,Zboruri *zb){
     zb[4].setPlecare("FCO");
     zb[5].setPlecare("BCN");
     zb[6].setPlecare("JFK");
+    zb[7].setPlecare("OTP");
 
     zb[0].setDestinatie("BCN");
     zb[1].setDestinatie("FCO");
@@ -264,6 +265,7 @@ void init(Avioane *av,Zboruri *zb){
     zb[4].setDestinatie("BGY");
     zb[5].setDestinatie("JFK");
     zb[6].setDestinatie("LAX");
+    zb[7].setDestinatie("BCM");
 
     zb[0].setDistanta(1975);
     zb[1].setDistanta(1141);
@@ -272,10 +274,11 @@ void init(Avioane *av,Zboruri *zb){
     zb[4].setDistanta(500);
     zb[5].setDistanta(6162);
     zb[6].setDistanta(3935);
+    zb[7].setDistanta(250);
 }
 Avioane *avi = new Avioane[4];
-Zboruri *zbo = new Zboruri[7];
-int len_avi = 4, len_zbo = 7;
+Zboruri *zbo = new Zboruri[8];
+int len_avi = 4, len_zbo = 8;
 
 void adauga_avioane(){
     cout<<"Cate avioane doriti sa introduceti:\n";
@@ -376,9 +379,9 @@ void avr(){
     else{
         bool ok=0;
         for(int i=0;i<len_avi;i++){
-            if(avi[i].getCapacitate() > 2 * dist + dist/10) {
+            if(avi[i].getCapacitate() > dist + 8*(dist/10)) {
                 cout << avi[i].getInmatriculare() << " poate zbura cu un consum de "
-                     << avi[i].getConsum100() * (dist / 100) << " litri de kerosen.\n";
+                     << avi[i].getConsum100() * (dist / 100) + (avi[i].getConsum100() *(dist%100))/100<< " litri de kerosen.\n";
                 ok=1;
             }
         }
@@ -399,10 +402,10 @@ void rva(){
     }
     bool ok=0;
     for(int i = 0;i<len_zbo;i++){
-        if(avi[index].getCapacitate() > 2 * zbo[i].getDistanta() + zbo[i].getDistanta()/10) {
+        if(avi[index].getCapacitate() >  zbo[i].getDistanta() + 8*(zbo[i].getDistanta()/10)) {
             cout << "Pe ruta " << zbo[i].getPlecare() << " " << zbo[i].getDestinatie()
                  << " se poate zbura cu un consum de "
-                 << avi[index].getConsum100() * (zbo[i].getDistanta() / 100) << " litri de kerosen.\n";
+                 << avi[index].getConsum100() * (zbo[i].getDistanta() / 100) + (avi[index].getConsum100() *zbo[i].getDistanta())/100<< " litri de kerosen.\n";
             ok = 1;
         }
     }
