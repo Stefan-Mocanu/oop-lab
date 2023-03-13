@@ -30,7 +30,7 @@ Lista aeroporturilor mentionate:
 3. BCM - Bacau Romania
 4. FCO - Fiumicino(Roma) Italia
 5. BGY - Bergamo(Milano) Italia
-6. BCN - Barelona Spania 
+6. BCN - Barcelona Spania 
 7. JFK - New York USA 
 8. LAX - Los Angeles USA 
 9. LTN - Luton(Londra) UK
