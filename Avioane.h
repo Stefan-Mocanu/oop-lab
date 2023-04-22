@@ -14,6 +14,7 @@ class Avioane {
 public:
     static std::vector<Avioane> avi;
     static int len_avi;
+    static void af_avi();
     Avioane();
     Avioane(std::string n,std::string m,int cap,int comb) ;
     Avioane(const Avioane &av);

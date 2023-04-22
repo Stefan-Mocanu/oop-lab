@@ -12,8 +12,6 @@ class Meniu {
     static void sterge_ruta();
     static void avr();
     static void rva();
-    static void af_avi();
-    static void af_zbo();
     static void init();
 public:
     static void meniu();

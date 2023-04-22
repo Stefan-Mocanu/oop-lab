@@ -8,6 +8,10 @@ using namespace std;
 vector<Zboruri> Zboruri::zbo;
 int Zboruri::len_zbo = 8;
 
+void Zboruri::af_zbo(){
+    cout<<"Plecare/Destinatie/Distanta\n";
+    for(int i = 0;i<Zboruri::len_zbo;i++)cout<<Zboruri::zbo[i]<<endl;
+}
 
 Zboruri::Zboruri(){
     plecare = "";
@@ -19,7 +23,12 @@ Zboruri::Zboruri(const string plec, const string dest, const int dist){
     destinatie = dest;
     distanta = dist;
 }
-
+Zboruri::Zboruri(const Zboruri &zbor){
+   plecare = zbor.plecare;
+   destinatie = zbor.destinatie;
+   distanta = zbor.distanta;
+}
+Zboruri::~Zboruri()=default;
 
 string Zboruri::getPlecare()const{
     return plecare;

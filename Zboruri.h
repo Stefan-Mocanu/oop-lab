@@ -14,9 +14,10 @@ class Zboruri{
 public:
     static std::vector<Zboruri> zbo;
     static int len_zbo;
+    static void af_zbo();
     Zboruri();
     Zboruri(std::string plec, std::string dest, int dist);
-    Zboruri(Zboruri &zbor);
+    Zboruri(const Zboruri &zbor);
     ~Zboruri();
 
     std::string getPlecare()const;

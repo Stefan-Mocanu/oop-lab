@@ -10,6 +10,11 @@ using namespace std;
 
 vector<Avioane> Avioane::avi;
 int Avioane::len_avi = 4;
+
+void Avioane::af_avi(){
+    cout<<"Inmatriculare/Model/Capacitate de zbor(km)/Consum la 100 de km\n";
+    for(auto i = 0;i<Avioane::len_avi;i++)cout<<Avioane::avi[i]<<endl;
+}
 Avioane::Avioane(){
     inmatriculare = "";
     model = "";
