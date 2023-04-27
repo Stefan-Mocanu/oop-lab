@@ -16,7 +16,7 @@
 
 using namespace std;
 
-ifstream fin("D:\\Faculatate\\Coduri\\POO\\Pr1\\tastatura.txt");
+ifstream fin(R"(D:\Faculatate\Coduri\POO\Pr1\tastatura.txt)");
 void Meniu::init(){
     std::unique_ptr<Avioane> av[4] = {std::make_unique<Avioane>("YR-MIZ","Boeing737-300",4000,110),
                                       std::make_unique<Avioane>("YR-MIR","Boeing737-800",5000,100),
@@ -83,12 +83,12 @@ void Meniu::adauga_avioane(){
 
 void Meniu::sterge_avion(){
     string a;
-    bool ok=0;
+    bool ok=false;
     cout<<"Introdu inmatricularea avionului care trebuie sters din flota: \n";
     fin>>a;
     auto i=Avioane::avi.begin();
     for(;i<Avioane::avi.end();i++){
-        if(i->getInmatriculare()==a){ok=1;break;}
+        if(i->getInmatriculare()==a){ok=true;break;}
     }
     try {
         if (!ok)throw input_invalid();
@@ -207,10 +207,10 @@ void Meniu::citire_personal() {
     fin>>n;
     vector<shared_ptr<Personal>> pers;
     for(int i=0;i<n;i++){
-        cout<<"\nPersonal navigant(0), nenavigant(1)";
+        cout<<"\n\nPersonal navigant(0), nenavigant(1)\n";
         bool tip;
         fin>>tip;
-        if(tip)pers.push_back(std::make_shared<Personal_Navigant>());
+        if(!tip)pers.push_back(std::make_shared<Personal_Navigant>());
         else pers.push_back(std::make_shared<Personal_NeNavigant>());
         cout<<"Nume: ";
         string aux;
@@ -221,7 +221,7 @@ void Meniu::citire_personal() {
         pers[i]->setPrenume(aux);
         if(pers[i]->getTipPersonal()=="Personal navigant"){
             shared_ptr<Personal_Navigant> pers1 = dynamic_pointer_cast<Personal_Navigant>(pers[i]);
-            cout<<"Pe ce avioane poate zbura angajatul curent(stop pentru oprire): ";
+            cout<<"Pe ce avioane poate zbura angajatul curent(stop pentru oprire): \n";
             fin>>aux;
             vector<string> aux1;
             while(aux != "stop"){
@@ -304,10 +304,11 @@ void Meniu::rvp(){
     string aero;
     fin>>aero;
     bool ok = false;
-    for(auto elem: Personal::prs){
+    cout<<endl;
+    for(const auto& elem: Personal::prs){
         if(elem->getTipPersonal()=="Personal NeNavigant"){
             shared_ptr<Personal_NeNavigant> ang = dynamic_pointer_cast<Personal_NeNavigant>(elem);
-            if(ang->getAeroportBaza()==aero){cout<<*ang<<" ";ok=true;}
+            if(ang->getAeroportBaza()==aero){cout<<*ang<<"\n";ok=true;}
         }
     }
     if(!ok)cout<<"Nu exista nici un angajat nenavigant asociat acestui aeroport.";
@@ -317,7 +318,7 @@ void Meniu::avp() {
     string avion;
     fin>>avion;
     bool ok1=false;
-    for(auto elem:Avioane::avi)if(avion == elem.getInmatriculare()){avion = elem.getModel();ok1=true;break;}
+    for(const auto& elem:Avioane::avi)if(avion == elem.getInmatriculare()){avion = elem.getModel();ok1=true;break;}
     if(!ok1){
         try{
             throw nu_exista();
@@ -368,19 +369,24 @@ void Meniu::avp() {
     while(nok);
     ok1 = true;
     vector<shared_ptr<Personal_Navigant>> ang;
-    for(auto elem: Personal::prs){
+    for(const auto& elem: Personal::prs){
         if(elem->getTipPersonal() == "Personal navigant"){
             auto elem2 = dynamic_pointer_cast<Personal_Navigant>(elem);
-            for(auto elem1:jbs)if(elem2->getJob() == elem1){ang.push_back(elem2);ok1=false;break;}
+            for(auto elem1:jbs)
+                if(elem2->getJob() == elem1){
+                    for(const auto& elem3: elem2->getTipAvioane()){
+                        if(elem3 == avion){ang.push_back(elem2);ok1=false;break;}
+                    }}
         }
     }
+    cout<<"\n";
     if(ok1)cout<<"Nici un angajat navigant nu poate circula pe avionul selectat.\n";
     else{
-        for(auto elem: ang)cout<<*elem<<"\n";
+        for(const auto& elem: ang)cout<<*elem<<"\n";
     }
 }
 void Meniu::pva(){
-    cout<<"Dati codul angajatului de verificat: ";
+    cout<<"Dati codul angajatului de verificat: \n";
     int x;
     fin>>x;
     bool ok=false;
@@ -396,7 +402,7 @@ void Meniu::pva(){
     }
     auto ang1 = dynamic_pointer_cast<Personal_NeNavigant>(ang);
     vector<Zboruri> fls;
-    for(auto elem: Zboruri::zbo){
+    for(const auto& elem: Zboruri::zbo){
         if(ang1->getAeroportBaza() == elem.getPlecare() || ang1->getAeroportBaza() == elem.getDestinatie())
         {
             fls.push_back(elem);
@@ -408,7 +414,7 @@ void Meniu::pva(){
     else cout<<"Nu exista nici o ruta disponibila.";
 }
 void Meniu::pvr(){
-    cout<<"Dati codul angajatului de verificat: ";
+    cout<<"Dati codul angajatului de verificat: \n";
     int x;
     fin>>x;
     bool ok=false;
@@ -424,8 +430,8 @@ void Meniu::pvr(){
     }
     auto ang1 = dynamic_pointer_cast<Personal_Navigant>(ang);
     vector<Avioane> avs;
-    for(auto elem: Avioane::avi){
-        for(auto elem1: ang1->getTipAvioane()){
+    for(const auto& elem: Avioane::avi){
+        for(const auto& elem1: ang1->getTipAvioane()){
             if(elem.getModel() == elem1){avs.push_back(elem);break;}
         }
     }
@@ -455,11 +461,11 @@ void Meniu::meniu()
     cout<<"4. Afiseaza rutele care pot fi circulate de un anumit avion."<<endl;
     cout<<"5. Afiseaza toate avioanele din flota."<<endl;
     cout<<"6. Afiseaza toate rutele disponibile."<<endl;
-    cout<<"7. Citeste n angajati.";
+    cout<<"7. Citeste n angajati."<<endl;
     cout<<"8. Afiseaza personalul nenavigant care are baza pe un aeroport."<<endl;
     cout<<"9. Afiseaza personalul navigant care poate circula pe un avion."<<endl;
-    cout<<"10. Afiseaza rutele care au un capat care este baza unui angajat nenavigant."<<endl;
-    cout<<"13. Afiseaza avioanele pe care poate circula un angajat navigant."<<endl;
+    cout<<"10. Afiseaza avioanele pe care poate circula un angajat navigant."<<endl;
+    cout<<"13. Afiseaza rutele care au un capat care este baza unui angajat nenavigant."<<endl;
     cout<<"14. Afiseaza toti angajatii."<<endl;
     cout<<"15. Sterge un angajat."<<endl;
     cout<<"16. Iesire."<<endl;
