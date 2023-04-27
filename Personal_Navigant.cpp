@@ -31,13 +31,15 @@ std::vector<std::string> Personal_Navigant::getTipAvioane(){
 }
 void Personal_Navigant::afis()const{
     Personal::afis();
+    std::cout<<"\tJob: ";
     switch(job){
         case navigant_jobs::insotitor_de_bord:{std::cout<<"Insotitor de Bord ";break;};
-        case navigant_jobs::pilot: {std::cout<<"Pilot ";break;}
-        case navigant_jobs::copilot: {std::cout<<"Copilot ";break;}
+        case navigant_jobs::pilot: {std::cout<<"Pilot\t";break;}
+        case navigant_jobs::copilot: {std::cout<<"Copilot\t";break;}
     }
+    std::cout<<"\tTip avioane: ";
     for(auto elem : tip_avioane){
-        std::cout<<elem;
+        std::cout<<elem<<" ";
     }
 }
 
@@ -50,5 +52,3 @@ navigant_jobs Personal_Navigant::getJob() const {
 void Personal_Navigant::setJob(navigant_jobs Job) {
     Personal_Navigant::job = Job;
 }
-
-

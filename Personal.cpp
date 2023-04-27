@@ -4,7 +4,9 @@
 
 #include "Personal.h"
 #include<iostream>
+
 int Personal::coduri_de_angajat=100;
+std::vector<std::shared_ptr<Personal>> Personal::prs;
 const std::string &Personal::getNume() const {
     return nume;
 }
@@ -31,7 +33,8 @@ void Personal::setCodAngajat(int CodAngajat) {
 
 Personal::~Personal() = default;
 void Personal::afis() const{
-    std::cout<<getCodAngajat()<<" "<<getNume()<<" "<<getPrenume()<<" ";
+    std::cout<<getCodAngajat()<<" Nume: "<<getNume()<<((std::size(getNume())<6)?"\t":"")<<"\tPrenume: "
+                <<getPrenume()<<((std::size(getPrenume())<6)?"\t":" ");
 }
 
 std::ostream& operator<<(std::ostream& out, const Personal& pers){
@@ -42,3 +45,10 @@ std::ostream& operator<<(std::ostream& out, const Personal& pers){
 Personal::Personal(const std::string &nume, const std::string &prenume) : nume(nume), prenume(prenume),cod_angajat(Personal::coduri_de_angajat++){}
 Personal::Personal():cod_angajat(Personal::coduri_de_angajat++) {}
 Personal::Personal(const Personal &pers) : nume(pers.nume),prenume(pers.prenume),cod_angajat(Personal::coduri_de_angajat++){}
+
+void Personal::adauga_ps(std::vector<std::shared_ptr<Personal>> ad) {
+    for(auto elem : ad)prs.push_back(elem);
+}
+void Personal::afiseaza_ps() {
+    for(auto elem : prs)std::cout<<*elem<<std::endl;
+}

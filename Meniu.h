@@ -13,6 +13,12 @@ class Meniu {
     static void avr();
     static void rva();
     static void init();
+    static void citire_personal();
+    static void rvp();
+    static void avp();
+    static void pva();
+    static void pvr();
+    static void sterge_personal();
 public:
     static void meniu();
 };

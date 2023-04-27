@@ -34,11 +34,12 @@ void Personal_NeNavigant::setAeroportBaza(const std::string &aeroportBaza) {
 }
 void Personal_NeNavigant::afis() const{
     this->Personal::afis();
+    std::cout<<"\tJob: ";
     switch(job){
             case non_navigant_jobs::agent_check_in:{std::cout<<"agent check in ";break;}
-            case non_navigant_jobs::tehnic:{std::cout<<"tehnic";break;}
+            case non_navigant_jobs::tehnic:{std::cout<<"tehnic"<<"\t";break;}
     }
-    std::cout<< " aeroport_baza: "<< aeroport_baza;
+    std::cout<< "\tAeroport baza: "<< aeroport_baza;
 }
 
 
